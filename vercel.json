@@ -4,6 +4,11 @@
   "buildCommand": null,
   "installCommand": "npm install",
   "outputDirectory": ".",
+  "redirects": [
+    { "source": "/originals/:path*", "destination": "/", "permanent": false },
+    { "source": "/server.js", "destination": "/", "permanent": false },
+    { "source": "/package-lock.json", "destination": "/", "permanent": false }
+  ],
   "headers": [
     {
       "source": "/api/(.*)",
