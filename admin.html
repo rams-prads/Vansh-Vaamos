@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vamoss — Orders</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f5f2;--fg:#14140f;--muted:#76746c;--line:rgba(20,20,15,.14);--card:#fff;--accent:#4e7a1f}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,system-ui,sans-serif;font-weight:300;background:var(--bg);color:var(--fg);
+  line-height:1.5;padding:40px clamp(16px,4vw,48px)}
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:16px;
+  margin-bottom:32px;padding-bottom:20px;border-bottom:1px solid var(--line)}
+h1{font-size:24px;font-weight:500;letter-spacing:-.01em}
+.count{font-size:13px;color:var(--muted)}
+a.back{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);text-decoration:none}
+a.back:hover{text-decoration:underline}
+.order{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px;margin-bottom:16px}
+.order__top{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;
+  padding-bottom:14px;border-bottom:1px solid var(--line);margin-bottom:14px}
+.order__id{font-weight:500}
+.order__when{font-size:12px;color:var(--muted)}
+.order__total{font-weight:500;font-variant-numeric:tabular-nums}
+.who{font-size:14px;margin-bottom:14px}
+.who div{margin-bottom:3px}
+.who .label{color:var(--muted);display:inline-block;min-width:74px;font-size:12px;
+  text-transform:uppercase;letter-spacing:.1em}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-weight:400;font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--muted);padding-bottom:8px}
+td{padding:7px 0;border-top:1px solid var(--line)}
+td:last-child,th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.empty{text-align:center;padding:70px 0;color:var(--muted)}
+.err{background:#fdeceb;border:1px solid #f3b9b4;color:#8c2f28;padding:14px 16px;border-radius:8px}
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Orders</h1>
+    <p class="count" id="count">Loading…</p>
+  </div>
+  <a class="back" href="/">← Back to shop</a>
+</header>
+
+<div id="list"></div>
+
+<script>
+const money = n => '₹ ' + Number(n).toLocaleString('en-IN');
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => (
+  { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]
+));
+
+const KEY = 'vamoss-admin-token';
+
+function load(token) {
+  const headers = token ? { Authorization: 'Bearer ' + token } : {};
+
+  fetch('/api/orders', { headers })
+  .then(async r => {
+    if (r.status === 401) {
+      sessionStorage.removeItem(KEY);
+      const entered = prompt('Orders password:');
+      if (!entered) throw new Error('locked');
+      sessionStorage.setItem(KEY, entered);
+      return load(entered), Promise.reject(new Error('retry'));
+    }
+    if (r.status === 503) {
+      const d = await r.json().catch(() => ({}));
+      throw new Error(d.error || 'Orders are locked');
+    }
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(orders => {
+    document.getElementById('count').textContent =
+      orders.length ? orders.length + ' order' + (orders.length === 1 ? '' : 's') : '';
+
+    if (!orders.length) {
+      document.getElementById('list').innerHTML =
+        '<p class="empty">No orders yet.</p>';
+      return;
+    }
+
+    document.getElementById('list').innerHTML = orders.map(o => `
+      <article class="order">
+        <div class="order__top">
+          <div>
+            <div class="order__id">Order #${o.id}</div>
+            <div class="order__when">${new Date(o.created_at).toLocaleString('en-IN')}</div>
+          </div>
+          <div class="order__total">${money(o.total)}</div>
+        </div>
+        <div class="who">
+          <div><span class="label">Name</span> ${esc(o.name)}</div>
+          <div><span class="label">Phone</span> ${esc(o.phone)}</div>
+          ${o.email ? `<div><span class="label">Email</span> ${esc(o.email)}</div>` : ''}
+          <div><span class="label">Address</span> ${esc(o.address)} — ${esc(o.pincode)}</div>
+          ${o.note ? `<div><span class="label">Note</span> ${esc(o.note)}</div>` : ''}
+        </div>
+        <table>
+          <thead><tr><th>Item</th><th>Size</th><th>Qty</th><th>Line</th></tr></thead>
+          <tbody>
+            ${o.items.map(i => `
+              <tr>
+                <td>${esc(i.name)}</td>
+                <td>${esc(i.size)}</td>
+                <td>${i.qty}</td>
+                <td>${money(i.unit_price * i.qty)}</td>
+              </tr>`).join('')}
+          </tbody>
+        </table>
+      </article>`).join('');
+  })
+  .catch(err => {
+    if (err.message === 'retry') return;
+    document.getElementById('count').textContent = '';
+    document.getElementById('list').innerHTML =
+      '<p class="err">' + (err.message === 'locked'
+        ? 'Password needed. <a href="">Try again</a>.'
+        : esc(err.message) + '<br>If the site is running locally, check that <code>node server.js</code> is up.')
+      + '</p>';
+  });
+}
+
+load(sessionStorage.getItem(KEY));
+</script>
+</body>
+</html>

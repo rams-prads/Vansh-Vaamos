@@ -1,0 +1,21 @@
+# Local order database — contains customer names, phones and addresses.
+# Never commit this.
+vamoss.db
+vamoss.db-shm
+vamoss.db-wal
+
+# Dependencies (Vercel installs these itself from package.json)
+node_modules/
+
+# Vercel CLI local state and build output
+.vercel/
+
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Editor / tooling
+.claude/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,110 @@
+[
+  {
+    "id": 1,
+    "name": "Tiered maxi dress",
+    "sub": "Sea green · crinkle viscose",
+    "price": 1699,
+    "category": "women",
+    "tag": "New",
+    "img": "images/dress-maxi-1.jpg",
+    "alt": "images/dress-maxi-4.jpg",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "stock": 12
+  },
+  {
+    "id": 2,
+    "name": "Embroidered kaftan dress",
+    "sub": "Royal blue · white floral embroidery",
+    "price": 1299,
+    "category": "women",
+    "tag": "New",
+    "img": "images/dress-kaftan-1.jpg",
+    "alt": "images/dress-kaftan-5.jpg",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "stock": 15
+  },
+  {
+    "id": 3,
+    "name": "Printed sequin kurta",
+    "sub": "Navy · teal floral panel",
+    "price": 1199,
+    "category": "women",
+    "tag": "New",
+    "img": "images/kurta-1.jpg",
+    "alt": "images/kurta-2.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "stock": 10
+  },
+  {
+    "id": 4,
+    "name": "Eyelet bell-sleeve top",
+    "sub": "Yellow · schiffli cotton",
+    "price": 1099,
+    "category": "women",
+    "tag": "New",
+    "img": "images/top-yellow-1.jpg",
+    "alt": "images/top-yellow-5.jpg",
+    "sizes": ["XS", "S", "M", "L", "XL"],
+    "stock": 14
+  },
+  {
+    "id": 5,
+    "name": "Linen wide-leg trousers",
+    "sub": "Natural beige · cotton linen",
+    "price": 1299,
+    "category": "women",
+    "tag": "New",
+    "img": "images/trousers-1.jpg",
+    "alt": "images/trousers-2.jpg",
+    "sizes": ["26", "28", "30", "32", "34"],
+    "stock": 18
+  },
+  {
+    "id": 6,
+    "name": "Paperbag shorts",
+    "sub": "Olive · cotton twill",
+    "price": 899,
+    "category": "women",
+    "tag": null,
+    "img": "images/shorts-1.jpg",
+    "alt": "images/shorts-2.jpg",
+    "sizes": ["26", "28", "30", "32"],
+    "stock": 9
+  },
+  {
+    "id": 7,
+    "name": "Women's fleece jacket",
+    "sub": "Olive green · anti-pill fleece",
+    "price": 1499,
+    "category": "women",
+    "tag": null,
+    "img": "images/fleece-women-1.jpg",
+    "alt": "images/fleece-women-2.jpg",
+    "sizes": ["S", "M", "L", "XL"],
+    "stock": 11
+  },
+  {
+    "id": 8,
+    "name": "Men's fleece jacket",
+    "sub": "Olive green · anti-pill fleece",
+    "price": 1599,
+    "category": "men",
+    "tag": null,
+    "img": "images/fleece-men-1.jpg",
+    "alt": "images/fleece-men-1.jpg",
+    "sizes": ["M", "L", "XL", "XXL"],
+    "stock": 8
+  },
+  {
+    "id": 9,
+    "name": "Kids' colourblock joggers",
+    "sub": "Beige & black · printed side tape",
+    "price": 699,
+    "category": "kids",
+    "tag": "New",
+    "img": "images/joggers-kids-1.jpg",
+    "alt": "images/joggers-kids-2.jpg",
+    "sizes": ["2-3Y", "4-5Y", "6-7Y", "8-9Y"],
+    "stock": 20
+  }
+]

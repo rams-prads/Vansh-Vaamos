@@ -1,0 +1,16 @@
+{
+  "name": "vamoss",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Vamoss storefront — static front end with serverless order API",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=22.5"
+  },
+  "dependencies": {
+    "pg": "8.13.1"
+  }
+}

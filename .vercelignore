@@ -1,0 +1,16 @@
+# raw WhatsApp dump and the old page — not web content, and large
+originals/
+
+# local SQLite database (never used on Vercel, and it holds customer data)
+vamoss.db
+vamoss.db-shm
+vamoss.db-wal
+
+# local-only dev server
+server.js
+
+# editor / tooling
+.claude/
+node_modules/
+.env
+.env.local
